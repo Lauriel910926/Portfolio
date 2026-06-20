@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盧亭臻 | UIUX & Web Design Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --cream:         #FAFAF7;
+      --salmon:        #F0A090;
+      --salmon-dark:   #E08878;
+      --gold:          #E8A030;
+      --tastory-bg:    #FDF6EF;
+      --tastory-brown: #8B6B4A;
+      --tastory-org:   #E07840;
+      --hatchie-bg:    #FFFEF7;
+      --hatchie-yel:   #FFD63A;
+      --about-bg:      #F5F0EA;
+      --terra:         #C96848;
+      --dark:          #1A1A1A;
+      --mid:           #555;
+      --light:         #999;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans TC', 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 64px;
+      background: rgba(250,250,247,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 500; letter-spacing: .06em;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .nav-logo:hover { opacity: .55; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 14px; letter-spacing: .04em;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: .5; }
+
+    /* ===== PAGE SYSTEM ===== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== HOME — HERO ===== */
+    .hero {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 100vh;
+      padding-top: 66px;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 72px;
+      background: var(--cream);
+    }
+    .hero-greeting { font-size: 36px; font-weight: 700; line-height: 1.3; }
+    .hero-title    { font-size: 36px; font-weight: 700; line-height: 1.3; margin-bottom: 28px; }
+    .hero-sub      { font-size: 14px; color: var(--mid); margin-bottom: 18px; line-height: 1.9; }
+    .hero-tags     { font-size: 11px; letter-spacing: .18em; color: var(--light); text-transform: uppercase; }
+
+    .hero-right {
+      position: relative;
+      background: var(--salmon);
+      overflow: hidden;
+    }
+
+    /* Floating phone mockups */
+    .phone {
+      position: absolute;
+      background: #fff;
+      border-radius: 26px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.18);
+      overflow: hidden;
+    }
+    .ph1 { width: 155px; height: 275px; top: 14%; left: 32%; transform: rotate(6deg); }
+    .ph2 { width: 148px; height: 260px; top: 28%; left:  8%; transform: rotate(-6deg); }
+    .ph3 { width: 138px; height: 248px; top: 38%; right: 6%; transform: rotate(3deg); }
+
+    .ph-screen {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; gap: 7px;
+      padding: 14px 10px;
+    }
+    .ph-bar { height: 7px; border-radius: 4px; background: #ddd; }
+    .ph-bar.s { width: 55%; } .ph-bar.m { width: 78%; } .ph-bar.f { width: 95%; }
+    .ph-bar.dk { background: #bbb; }
+    .ph-tile {
+      background: #fff; border-radius: 8px; padding: 8px;
+      display: flex; gap: 6px; align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    .ph-img {
+      width: 30px; height: 30px; border-radius: 6px; flex-shrink: 0;
+    }
+    .ph-lines { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .ph-line  { height: 5px; border-radius: 3px; background: #e8e8e8; }
+
+    /* deco blobs in hero right */
+    .h-blob {
+      position: absolute; border-radius: 50%; opacity: .35;
+    }
+    .hb1 { width:90px; height:90px; background:#D06838; bottom:22%; left:4%; }
+    .hb2 { width:55px; height:55px; background:#FFD080; top:8%;  right:8%; }
+    .hb3 { width:36px; height:36px; background:#fff;    top:60%; left:18%; opacity:.2; }
+
+    /* ===== PROJECT CARDS ===== */
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      transition: filter .25s;
+    }
+    .project-card:hover { filter: brightness(.96); }
+    .project-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background .25s;
+      pointer-events: none;
+    }
+    .project-card:hover::after { background: rgba(0,0,0,.025); }
+
+    .card-body {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 72px 68px;
+    }
+    .card-visual {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .card-arrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 28px; font-size: 13px; color: var(--light);
+      transition: gap .2s, color .2s;
+    }
+    .project-card:hover .card-arrow { gap: 14px; color: var(--mid); }
+
+    /* UniStay */
+    .unistay-card { background: #FBF8F2; }
+    .us-logo { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+    .us-name { font-size:34px; font-weight:600; color:var(--gold); letter-spacing:.01em; }
+    .us-en   { font-size:13px; color:var(--mid); margin-bottom:7px; }
+    .us-zh   { font-size:15px; font-weight:500; }
+    .unistay-visual { background:#F0EDE5; }
+
+    /* Tastory */
+    .tastory-card { background: var(--tastory-bg); }
+    .ts-title    { font-family:'Playfair Display',serif; font-size:50px; color:var(--tastory-brown); margin-bottom:14px; }
+    .ts-tagline  { font-family:'Playfair Display',serif; font-style:italic; font-size:17px; color:var(--tastory-org); line-height:1.6; }
+    .tastory-visual { background:#FDF0E8; }
+
+    /* Hatchie Diary */
+    .hatchie-card { background: var(--hatchie-bg); }
+    .hd-title {
+      font-size:46px; font-weight:900; line-height:1.1; margin-bottom:20px;
+      color: var(--hatchie-bg);
+      -webkit-text-stroke: 2px var(--dark);
+      text-shadow:
+        3px  3px 0 var(--hatchie-yel),
+        -1px -1px 0 var(--dark),
+         1px -1px 0 var(--dark),
+        -1px  1px 0 var(--dark),
+         1px  1px 0 var(--dark);
+    }
+    .hd-desc { font-size:14px; color:var(--mid); line-height:1.9; }
+    .hatchie-visual { background:#FFF9E5; }
+
+    /* ===== ABOUT SECTION ===== */
+    .about {
+      background: var(--about-bg);
+      position: relative; overflow: hidden;
+      min-height: 480px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 60px; text-align: center;
+    }
+    .ab-blob { position:absolute; border-radius:50%; }
+    .ab1 { width:340px;height:340px; background:var(--terra);   bottom:-100px; left:-90px; opacity:.85; }
+    .ab2 { width:220px;height:120px; background:#5A3020; border-radius: 0 0 110px 110px;
+           bottom:-30px; right:120px; transform:rotate(-12deg); opacity:.8; }
+    .ab3 { width:110px;height:110px; background:#E8D4A4; top:24px; right:56px; opacity:.6; }
+    .ab4 { width: 60px;height: 60px; background:#fff;    top:44px; left:220px; opacity:.15; }
+
+    .about-h {
+      font-size:26px; font-weight:700; line-height:1.6;
+      margin-bottom:22px; position:relative; z-index:1;
+    }
+    .about-p {
+      font-size:14px; color:var(--mid); line-height:2.1;
+      max-width:460px; position:relative; z-index:1;
+    }
+
+    /* ===== REVEAL ANIM ===== */
+    .reveal { opacity:0; transform:translateY(22px); transition:opacity .65s ease, transform .65s ease; }
+    .reveal.vis { opacity:1; transform:none; }
+
+    /* ===== PROJECT PAGES ===== */
+    .proj-page { padding-top: 66px; }
+
+    .proj-hero {
+      padding: 80px 128px;
+      min-height: 380px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .ph-us { background: #FBF8F2; }
+    .ph-ts { background: var(--tastory-bg); }
+    .ph-hd { background: var(--hatchie-bg); }
+
+    .back-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:13px; color:var(--mid);
+      margin-bottom:44px; cursor:pointer; transition:opacity .2s;
+      width: fit-content;
+    }
+    .back-btn:hover { opacity:.55; }
+
+    .proj-tag  { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--light); margin-bottom:14px; }
+    .proj-name { font-size:52px; font-weight:700; line-height:1.2; margin-bottom:14px; }
+    .proj-desc { font-size:15px; color:var(--mid); max-width:580px; line-height:1.9; }
+
+    .proj-meta {
+      display:flex; gap:64px; padding:36px 128px;
+      background:#fff; border-bottom:1px solid #eee;
+      flex-wrap:wrap;
+    }
+    .meta-label { display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--light); margin-bottom:6px; }
+    .meta-val   { font-size:14px; font-weight:500; }
+
+    .proj-body { max-width:780px; margin:0 auto; padding:80px 32px; }
+
+    .proj-sec { margin-bottom:64px; }
+    .proj-sec h2 {
+      font-size:20px; font-weight:700;
+      margin-bottom:20px; padding-bottom:12px;
+      border-bottom:2px solid #eee;
+    }
+    .proj-sec p { font-size:15px; color:var(--mid); line-height:1.95; margin-bottom:14px; }
+
+    .img-ph {
+      width:100%; height:280px; border-radius:14px;
+      background:#F0EDE6;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--light); font-size:13px; letter-spacing:.08em;
+      margin:24px 0;
+      border: 1.5px dashed #ddd;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark); color:rgba(255,255,255,.75);
+      text-align:center; padding:36px;
+      font-size:13px; letter-spacing:.04em;
+    }
+
+    /* ===== SVG ILLUSTRATIONS ===== */
+    .illo { opacity:.5; }
+
+    /* ===== MONSTERS ===== */
+    .monsters-wrap {
+      display:flex; align-items:flex-end; gap:10px;
+      padding:32px; flex-wrap:wrap; justify-content:center;
+    }
+    .mon { display:flex; flex-direction:column; align-items:center; }
+    .mon-body {
+      border-radius:50% 50% 42% 42%;
+      position:relative;
+      display:flex; align-items:flex-start; justify-content:center;
+      padding-top:18px;
+    }
+    .mon-eyes { display:flex; gap:7px; }
+    .mon-eye  {
+      background:#fff; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .mon-pupil { background:#222; border-radius:50%; }
+    .mon-mouth { position:absolute; bottom:14px; border-radius:3px; background:rgba(0,0,0,.18); }
+    .mon-leg   { background:inherit; border-radius:0 0 5px 5px; }
+    .mon-legs  { display:flex; justify-content:space-evenly; width:100%; }
+    .mon-spike {
+      position:absolute; top:-12px; width:0; height:0;
+      border-left:6px solid transparent;
+      border-right:6px solid transparent;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-logo" onclick="goHome()">盧亭臻</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="toAbout();return false">About</a></li>
+    <li><a href="#" onclick="toWork();return false">Work</a></li>
+    <li><a href="mailto:vicky502097@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════ -->
+<div id="pg-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-greeting">嗨！我是盧亭臻</div>
+      <div class="hero-title">歡迎來到我的PORTFOLIO</div>
+      <p class="hero-sub">我講求文化敏銳度&amp;洞察，打造有溫度的體驗</p>
+      <div class="hero-tags">UIUX &nbsp;·&nbsp; WEB DESIGN</div>
+    </div>
+
+    <div class="hero-right">
+      <div class="h-blob hb1"></div>
+      <div class="h-blob hb2"></div>
+      <div class="h-blob hb3"></div>
+
+      <!-- Phone 1 -->
+      <div class="phone ph1">
+        <div class="ph-screen" style="background:linear-gradient(155deg,#fff8f6,#f0e8e4)">
+          <div class="ph-bar dk f"></div>
+          <div class="ph-bar s"></div>
+          <div class="ph-tile">
+            <div class="ph-img" style="background:linear-gradient(135deg,#ff9472,#f27121)"></div>
+            <div class="ph-lines"><div class="ph-line" style="width:90%"></div><div class="ph-line" style="width:60%"></div></div>
+          </div>
+          <div class="ph-tile">
+            <div class="ph-img" style="background:linear-gradient(135deg,#84fab0,#8fd3f4)"></div>
+            <div class="ph-lines"><div class="ph-line" style="width:80%"></div><div class="ph-line" style="width:55%"></div></div>
+          </div>
+          <div class="ph-tile">
+            <div class="ph-img" style="background:linear-gradient(135deg,#fccb90,#d57eeb)"></div>
+            <div class="ph-lines"><div class="ph-line" style="width:75%"></div><div class="ph-line" style="width:70%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 2 -->
+      <div class="phone ph2">
+        <div class="ph-screen" style="background:linear-gradient(155deg,#fffaf6,#f5ede5)">
+          <div style="height:38px;background:var(--salmon);border-radius:8px;margin-bottom:8px"></div>
+          <div class="ph-bar dk m" style="margin-bottom:4px"></div>
+          <div class="ph-bar s" style="margin-bottom:10px"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+            <div style="height:56px;background:#e8d4c0;border-radius:9px"></div>
+            <div style="height:56px;background:#c8ddd0;border-radius:9px"></div>
+            <div style="height:56px;background:#d0cce0;border-radius:9px"></div>
+            <div style="height:56px;background:#e4e0c8;border-radius:9px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 3 -->
+      <div class="phone ph3">
+        <div class="ph-screen" style="background:linear-gradient(155deg,#fffdf0,#f8f2e0)">
+          <div style="height:22px;background:var(--hatchie-yel);border-radius:6px;margin-bottom:10px;opacity:.85"></div>
+          <div class="ph-bar dk m" style="margin-bottom:4px"></div>
+          <div class="ph-bar s" style="margin-bottom:10px"></div>
+          <div style="height:76px;background:#f0e8d4;border-radius:9px;margin-bottom:8px"></div>
+          <div class="ph-bar f"></div>
+          <div class="ph-bar m"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT CARDS -->
+  <section id="work">
+
+    <!-- UniStay -->
+    <div class="project-card unistay-card reveal" onclick="showPage('unistay')">
+      <div class="card-body">
+        <div class="us-logo">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+            <path d="M19 5L34 17V33H25V25H13V33H4V17L19 5Z"
+              stroke="#E8A030" stroke-width="2.4" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="us-name">UniStay</span>
+        </div>
+        <p class="us-en">Connecting Students with the Perfect Stay</p>
+        <p class="us-zh">專為外國留學生設計的租房網站</p>
+        <span class="card-arrow">查看專案 →</span>
+      </div>
+      <div class="card-visual unistay-visual">
+        <svg class="illo" viewBox="0 0 320 290" width="320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- House -->
+          <rect x="60" y="136" width="200" height="134" rx="4" fill="#D8CDB8" stroke="#C4B89A" stroke-width="1.5"/>
+          <polygon points="28,138 160,42 292,138" fill="#EAD9BC" stroke="#C4B89A" stroke-width="1.5"/>
+          <!-- Door -->
+          <rect x="128" y="194" width="64" height="76" rx="5" fill="#B8A882"/>
+          <circle cx="184" cy="232" r="4" fill="#DDD0B0"/>
+          <!-- Windows -->
+          <rect x="78" y="162" width="52" height="48" rx="4" fill="#C8DAE8" opacity=".9"/>
+          <rect x="190" y="162" width="52" height="48" rx="4" fill="#C8DAE8" opacity=".9"/>
+          <line x1="104" y1="162" x2="104" y2="210" stroke="#B0C8D8" stroke-width="1"/>
+          <line x1="78"  y1="186" x2="130" y2="186" stroke="#B0C8D8" stroke-width="1"/>
+          <line x1="216" y1="162" x2="216" y2="210" stroke="#B0C8D8" stroke-width="1"/>
+          <line x1="190" y1="186" x2="242" y2="186" stroke="#B0C8D8" stroke-width="1"/>
+          <!-- Person sitting -->
+          <circle cx="240" cy="224" r="20" fill="#F5C8A0"/>
+          <path d="M224 242 Q240 268 256 242" stroke="#8B7060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M224 242 Q210 268 218 280" stroke="#8B7060" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M256 242 Q270 268 262 280" stroke="#8B7060" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Suitcase -->
+          <rect x="62" y="240" width="40" height="28" rx="4" fill="#E8C060" stroke="#C8A040" stroke-width="1.5"/>
+          <rect x="74" y="234" width="16" height="8" rx="3" stroke="#C8A040" stroke-width="1.5" fill="none"/>
+          <line x1="62" y1="254" x2="102" y2="254" stroke="#C8A040" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tastory -->
+    <div class="project-card tastory-card reveal" onclick="showPage('tastory')">
+      <div class="card-body">
+        <div class="ts-title">Tastory</div>
+        <div class="ts-tagline">From Spoken Flavor<br>to Shared Heritage</div>
+        <span class="card-arrow">查看專案 →</span>
+      </div>
+      <div class="card-visual tastory-visual">
+        <svg class="illo" viewBox="0 0 320 290" width="320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grandma body -->
+          <circle cx="112" cy="118" r="32" fill="#F5C8A0"/>
+          <!-- hair bun -->
+          <path d="M96 98 Q112 82 128 98" fill="#888" stroke="none"/>
+          <circle cx="112" cy="88" r="10" fill="#888"/>
+          <!-- grandma body/clothes -->
+          <path d="M82 150 Q112 218 142 150" fill="#7A9080"/>
+          <path d="M86 160 Q72 228 98 252" stroke="#7A9080" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M138 160 Q152 228 126 252" stroke="#7A9080" stroke-width="9" fill="none" stroke-linecap="round"/>
+
+          <!-- Child body -->
+          <circle cx="206" cy="135" r="26" fill="#F5C8A0"/>
+          <path d="M180 161 Q206 218 232 161" fill="#E07840"/>
+          <path d="M184 172 Q170 234 194 252" stroke="#E07840" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M228 172 Q242 234 218 252" stroke="#E07840" stroke-width="8" fill="none" stroke-linecap="round"/>
+
+          <!-- Child hair -->
+          <path d="M182 128 Q206 108 230 128" fill="#4A3020"/>
+          <rect x="188" y="106" width="36" height="12" rx="6" fill="#4A3020"/>
+
+          <!-- Cutting board -->
+          <rect x="118" y="204" width="88" height="48" rx="7" fill="#C8A060"/>
+          <rect x="122" y="208" width="80" height="40" rx="5" fill="#D4AC70" opacity=".5"/>
+
+          <!-- Veggies -->
+          <circle cx="148" cy="222" r="11" fill="#58A860"/>
+          <circle cx="168" cy="228" r="9"  fill="#60B068"/>
+          <circle cx="188" cy="220" r="8"  fill="#58A860"/>
+          <line x1="148" y1="211" x2="148" y2="204" stroke="#48882C" stroke-width="2" stroke-linecap="round"/>
+          <line x1="168" y1="219" x2="168" y2="212" stroke="#48882C" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- Knife handle -->
+          <rect x="195" y="188" width="8" height="36" rx="3" fill="#8B6040" transform="rotate(30 195 188)"/>
+          <rect x="190" y="192" width="4" height="28" rx="1" fill="#C0C0C0" transform="rotate(30 190 192)"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Hatchie Diary -->
+    <div class="project-card hatchie-card reveal" onclick="showPage('hatchie')">
+      <div class="card-body">
+        <div class="hd-title">HATCHIE<br>DIARY</div>
+        <p class="hd-desc">一款降低使用者負擔，<br>分散式記錄生活的日記APP</p>
+        <span class="card-arrow" style="color:var(--light)">查看專案 →</span>
+      </div>
+      <div class="card-visual hatchie-visual">
+        <!-- Monster group -->
+        <div class="monsters-wrap">
+
+          <!-- Yellow monster -->
+          <div class="mon">
+            <div class="mon-body" style="width:68px;height:82px;background:#FFD63A">
+              <div class="mon-eyes">
+                <div class="mon-eye" style="width:14px;height:18px"><div class="mon-pupil" style="width:7px;height:9px"></div></div>
+                <div class="mon-eye" style="width:14px;height:18px"><div class="mon-pupil" style="width:7px;height:9px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:36px;height:7px;left:16px"></div>
+            </div>
+            <div class="mon-legs" style="width:68px">
+              <div class="mon-leg" style="width:11px;height:18px;background:#FFD63A"></div>
+              <div class="mon-leg" style="width:11px;height:18px;background:#FFD63A"></div>
+            </div>
+          </div>
+
+          <!-- Green monster (short) -->
+          <div class="mon">
+            <div class="mon-body" style="width:58px;height:66px;background:#5EC46A">
+              <div class="mon-eyes">
+                <div class="mon-eye" style="width:13px;height:16px"><div class="mon-pupil" style="width:6px;height:8px"></div></div>
+                <div class="mon-eye" style="width:13px;height:16px"><div class="mon-pupil" style="width:6px;height:8px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:28px;height:6px;left:15px"></div>
+            </div>
+          </div>
+
+          <!-- Orange spiky monster (tall) -->
+          <div class="mon">
+            <div class="mon-body" style="width:52px;height:96px;background:#F08040;position:relative">
+              <div class="mon-spike" style="left:6px;border-bottom:16px solid #F08040"></div>
+              <div class="mon-spike" style="left:22px;border-bottom:13px solid #F08040"></div>
+              <div class="mon-spike" style="right:5px;border-bottom:11px solid #F08040"></div>
+              <div class="mon-eyes">
+                <div class="mon-eye" style="width:12px;height:15px"><div class="mon-pupil" style="width:6px;height:7px"></div></div>
+                <div class="mon-eye" style="width:12px;height:15px"><div class="mon-pupil" style="width:6px;height:7px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:26px;height:6px;left:13px"></div>
+            </div>
+          </div>
+
+          <!-- Purple monster -->
+          <div class="mon">
+            <div class="mon-body" style="width:56px;height:68px;background:#A070D0">
+              <div class="mon-eyes">
+                <div class="mon-eye" style="width:13px;height:15px"><div class="mon-pupil" style="width:6px;height:7px"></div></div>
+                <div class="mon-eye" style="width:13px;height:15px"><div class="mon-pupil" style="width:6px;height:7px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:28px;height:6px;left:14px"></div>
+            </div>
+          </div>
+
+          <!-- Blue wide monster -->
+          <div class="mon">
+            <div class="mon-body" style="width:78px;height:70px;background:#4A8EE0">
+              <div class="mon-eyes" style="gap:12px">
+                <div class="mon-eye" style="width:15px;height:19px"><div class="mon-pupil" style="width:7px;height:9px"></div></div>
+                <div class="mon-eye" style="width:15px;height:19px"><div class="mon-pupil" style="width:7px;height:9px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:42px;height:8px;left:18px;background:rgba(0,0,0,.22)"></div>
+            </div>
+            <div class="mon-legs" style="width:78px">
+              <div class="mon-leg" style="width:13px;height:20px;background:#4A8EE0"></div>
+              <div class="mon-leg" style="width:13px;height:20px;background:#4A8EE0"></div>
+            </div>
+          </div>
+
+          <!-- Red small monster -->
+          <div class="mon">
+            <div class="mon-body" style="width:48px;height:58px;background:#E05050">
+              <div class="mon-eyes">
+                <div class="mon-eye" style="width:11px;height:13px"><div class="mon-pupil" style="width:5px;height:6px"></div></div>
+                <div class="mon-eye" style="width:11px;height:13px"><div class="mon-pupil" style="width:5px;height:6px"></div></div>
+              </div>
+              <div class="mon-mouth" style="width:22px;height:5px;left:13px"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="ab-blob ab1"></div>
+    <div class="ab-blob ab2"></div>
+    <div class="ab-blob ab3"></div>
+    <div class="ab-blob ab4"></div>
+    <h2 class="about-h reveal">以文化敏銳度與清晰結構為基礎，<br>打造有意義和溫度的體驗。</h2>
+    <p class="about-p reveal">
+      我以 <strong>文化敏銳度</strong> 與 <strong>清晰結構</strong> 為設計核心，關注不同使用者的文化脈絡與情感差異，將研究洞察轉化為有溫度的體驗。我相信好的設計不僅解決問題，更能傳遞理解與共感，讓科技在理性與人性之間找到平衡。
+    </p>
+  </section>
+
+  <footer>© 2024 盧亭臻 &nbsp;·&nbsp; UIUX &amp; Web Design &nbsp;·&nbsp; vicky502097@gmail.com</footer>
+
+</div><!-- /pg-home -->
+
+
+<!-- ════════════════════════════════════════
+     UNISTAY PAGE
+════════════════════════════════════════ -->
+<div id="pg-unistay" class="page">
+<style>
+/* ── UniStay page styles ── */
+.us-page { padding-top:66px; font-family:'Noto Sans TC','Inter',sans-serif; }
+
+/* Nav override for project pages */
+.us-page .back-btn { display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#666;cursor:pointer;transition:opacity .2s; }
+.us-page .back-btn:hover { opacity:.55; }
+
+/* HERO */
+.us-hero {
+  display:grid; grid-template-columns:1fr 1fr; min-height:460px;
+}
+.us-hero-left {
+  background:#fff; display:flex; align-items:center; justify-content:center;
+  padding:60px 48px;
+}
+/* Laptop mockup */
+.laptop-wrap { position:relative; width:340px; }
+.laptop-screen-outer {
+  background:#222; border-radius:12px 12px 0 0; padding:10px 10px 0;
+  box-shadow: 0 16px 48px rgba(0,0,0,.2);
+}
+.laptop-screen {
+  background:#fff; border-radius:6px; overflow:hidden;
+  aspect-ratio:16/10;
+  display:flex; flex-direction:column;
+}
+.ls-nav {
+  background:#F0A828; padding:8px 12px; display:flex; align-items:center; justify-content:space-between;
+}
+.ls-logo { color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; gap:4px; }
+.ls-search {
+  background:#fff; border-radius:20px; padding:4px 12px; font-size:9px; color:#bbb;
+  flex:1; margin:0 12px;
+}
+.ls-body { flex:1; padding:10px; display:grid; grid-template-columns:1fr 2fr; gap:8px; overflow:hidden; }
+.ls-sidebar { display:flex;flex-direction:column;gap:6px; }
+.ls-filter { background:#f5f5f5;border-radius:6px;padding:6px 8px; }
+.ls-filter-title { font-size:7px;font-weight:700;color:#333;margin-bottom:4px; }
+.ls-filter-line { height:4px;border-radius:2px;background:#e0e0e0;margin-bottom:3px; }
+.ls-filter-line.active { background:#F0A828;width:60%; }
+.ls-cards { display:flex;flex-direction:column;gap:6px; }
+.ls-card {
+  background:#fff;border-radius:6px;border:1px solid #eee;padding:6px;
+  display:flex;gap:6px;align-items:flex-start;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.ls-card-img { width:36px;height:36px;border-radius:4px;background:linear-gradient(135deg,#f0c080,#e09040);flex-shrink:0; }
+.ls-card-lines { flex:1;display:flex;flex-direction:column;gap:3px; }
+.ls-card-line { height:4px;border-radius:2px;background:#eee; }
+.ls-card-price { height:5px;width:40%;border-radius:2px;background:#F0A828;margin-top:2px; }
+.laptop-base {
+  background:#ccc; height:18px; border-radius:0 0 4px 4px;
+  margin: 0 -4px;
+}
+.laptop-stand {
+  width:80px; height:8px; background:#bbb; border-radius:0 0 6px 6px;
+  margin:0 auto;
+}
+
+.us-hero-right {
+  background:#F0A828; display:flex;flex-direction:column;
+  justify-content:center; padding:60px 56px;
+}
+.us-hero-logo { display:flex;align-items:center;gap:10px;margin-bottom:28px; }
+.us-hero-logo-icon { width:44px;height:44px; }
+.us-hero-logo-text { font-size:42px;font-weight:700;color:#fff;letter-spacing:.01em; }
+.us-hero-desc { font-size:14px;color:rgba(255,255,255,.9);line-height:1.9;margin-bottom:16px; }
+.us-hero-sub { font-size:12px;color:rgba(255,255,255,.7);letter-spacing:.08em; }
+
+/* OVERVIEW */
+.us-section { padding:72px 128px; background:#fff; }
+.us-section.gray { background:#F7F5F2; }
+.us-section.amber { background:#F0A828; }
+.us-section.cream { background:#FBF9F4; }
+.us-sec-h2 { font-size:26px;font-weight:700;margin-bottom:20px;color:#1A1A1A; }
+.us-sec-h2.white { color:#fff; }
+.us-sec-p  { font-size:14px;color:#555;line-height:2; }
+.us-sec-p.white { color:rgba(255,255,255,.9); }
+
+/* THREE SCREENS */
+.us-screens { display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px; }
+.us-screen-item { text-align:center; }
+.us-screen-mock {
+  background:#f0f0f0; border-radius:10px; overflow:hidden;
+  aspect-ratio:16/10; margin-bottom:14px;
+  border:2px solid #e0e0e0;
+  display:flex;flex-direction:column;
+}
+.us-sm-bar { height:22px;background:#F0A828;display:flex;align-items:center;padding:0 8px;gap:4px;flex-shrink:0; }
+.us-sm-dot { width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5); }
+.us-sm-body { flex:1;padding:8px;display:flex;flex-direction:column;gap:5px;overflow:hidden; }
+.us-sm-row  { display:flex;gap:5px; }
+.us-sm-card { flex:1;height:32px;background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08); }
+.us-sm-card.tall { height:48px; }
+.us-sm-label-l { font-size:11px;font-weight:700;color:#333;margin-bottom:4px; }
+.us-sm-label-s { font-size:11px;color:#777;line-height:1.6; }
+
+/* BRAND SECTION */
+.us-brand {
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:#F0A828; padding:0;
+}
+.us-brand-left {
+  padding:72px 80px; display:flex;flex-direction:column;justify-content:center;
+  border-right:1px solid rgba(255,255,255,.25);
+}
+.us-brand-logo-text { font-size:52px;font-weight:700;color:#fff;margin-bottom:8px; }
+.us-brand-sub { font-size:13px;color:rgba(255,255,255,.75);line-height:1.8; }
+.us-brand-right { padding:72px 80px;display:flex;flex-direction:column;justify-content:center; }
+.us-brand-h { font-size:22px;font-weight:700;color:#fff;line-height:1.5;margin-bottom:20px; }
+.us-brand-p { font-size:13px;color:rgba(255,255,255,.88);line-height:2; }
+
+/* RESEARCH */
+.us-research {
+  padding:72px 128px; background:#F7F5F2;
+}
+.us-res-h { font-size:22px;font-weight:700;margin-bottom:40px; }
+.us-res-body { display:grid;grid-template-columns:1.6fr 1fr;gap:40px;align-items:start; }
+
+/* Bar chart */
+.us-chart { }
+.us-chart-title { font-size:13px;font-weight:700;color:#333;margin-bottom:6px; }
+.us-chart-sub   { font-size:11px;color:#999;margin-bottom:16px; }
+.us-bars { display:flex;align-items:flex-end;gap:8px;height:140px;padding:0 4px; }
+.us-bar-wrap { display:flex;flex-direction:column;align-items:center;flex:1; }
+.us-bar {
+  width:100%; border-radius:4px 4px 0 0; background:#F0A828;
+  transition: height .4s;
+}
+.us-bar-lbl { font-size:9px;color:#999;margin-top:5px; }
+.us-chart-x { border-top:1px solid #ccc;margin-top:0;padding-top:0; }
+
+/* Research cards */
+.us-res-cards { display:flex;flex-direction:column;gap:16px; }
+.us-res-card {
+  background:#fff;border-radius:10px;padding:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.07);
+}
+.us-res-card-h { font-size:13px;font-weight:700;color:#333;margin-bottom:8px; }
+.us-res-card-p { font-size:12px;color:#666;line-height:1.8; }
+
+/* PERSONA */
+.us-persona { padding:72px 128px;background:#fff; }
+.us-persona-h { font-size:22px;font-weight:700;margin-bottom:32px; }
+.us-persona-card {
+  background:#F7F5F2;border-radius:16px;overflow:hidden;
+  display:grid;grid-template-columns:280px 1fr;
+}
+.us-pc-left { background:#E8E4DC;padding:28px; }
+.us-pc-photo {
+  width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#d4a880,#c09060);
+  margin-bottom:16px;display:flex;align-items:center;justify-content:center;
+  font-size:32px;overflow:hidden;
+}
+.us-pc-name { font-size:18px;font-weight:700;margin-bottom:4px; }
+.us-pc-tag  { font-size:11px;color:#888;margin-bottom:20px; }
+.us-pc-row  { display:flex;align-items:center;gap:8px;margin-bottom:10px; }
+.us-pc-dot  { width:8px;height:8px;border-radius:50%;background:#F0A828;flex-shrink:0; }
+.us-pc-lbl  { font-size:11px;font-weight:700;color:#555; }
+.us-pc-val  { font-size:11px;color:#777; }
+.us-pc-right { padding:28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+.us-pc-block-h { font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#F0A828;margin-bottom:8px; }
+.us-pc-block-p { font-size:12px;color:#555;line-height:1.8; }
+.us-pc-block-item { display:flex;align-items:flex-start;gap:6px;margin-bottom:6px; }
+.us-pc-bullet { color:#F0A828;font-size:14px;line-height:1.4;flex-shrink:0; }
+
+/* PAIN POINTS */
+.us-pain { padding:72px 128px;background:#FBF9F4; }
+.us-pain-h { font-size:22px;font-weight:700;margin-bottom:8px; }
+.us-pain-sub { font-size:13px;color:#888;margin-bottom:40px; }
+.us-pain-grid { display:grid;grid-template-columns:1fr 1fr;gap:32px; }
+.us-pain-item { }
+.us-pain-title { font-size:20px;font-weight:700;color:#F0A828;margin-bottom:10px;line-height:1.4; }
+.us-pain-desc  { font-size:13px;color:#666;line-height:1.9; }
+
+/* SOLUTION */
+.us-solution { padding:72px 128px;background:#fff; }
+.us-sol-h { font-size:22px;font-weight:700;margin-bottom:20px; }
+.us-sol-big {
+  font-size:22px;font-weight:700;line-height:1.7;color:#1A1A1A;
+  margin-bottom:32px;padding:32px;background:#FBF9F4;border-radius:12px;
+  border-left:4px solid #F0A828;
+}
+.us-sol-p { font-size:14px;color:#555;line-height:2; }
+
+/* SOLUTION IDEAS */
+.us-ideas { padding:72px 128px;background:#F7F5F2; }
+.us-ideas-h { font-size:22px;font-weight:700;margin-bottom:32px; }
+.us-ideas-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px; }
+.us-idea-card {
+  background:#fff;border-radius:12px;padding:24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);
+}
+.us-idea-num  { font-size:32px;font-weight:900;color:#F0A828;opacity:.4;margin-bottom:8px; }
+.us-idea-card-h { font-size:14px;font-weight:700;margin-bottom:8px; }
+.us-idea-card-p { font-size:12px;color:#666;line-height:1.8; }
+</style>
+
+<div class="us-page">
+  <!-- Back button in nav area -->
+  <div style="position:fixed;top:0;left:0;right:0;z-index:150;display:flex;align-items:center;padding:22px 64px;background:rgba(250,250,247,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.04)">
+    <div class="back-btn" onclick="goHome()">← 返回作品集</div>
+    <ul class="nav-links" style="margin-left:auto">
+      <li><a href="#" onclick="goHome();return false">About</a></li>
+      <li><a href="#" onclick="goHome();return false">Work</a></li>
+      <li><a href="mailto:vicky502097@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <div class="us-hero">
+    <div class="us-hero-left">
+      <div class="laptop-wrap">
+        <div class="laptop-screen-outer">
+          <div class="laptop-screen">
+            <!-- Laptop nav -->
+            <div class="ls-nav">
+              <div class="ls-logo">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 1.5L13 6.5V12.5H9.5V9.5H4.5V12.5H1V6.5L7 1.5Z" stroke="white" stroke-width="1.2" fill="none"/>
+                </svg>
+                UniStay
+              </div>
+              <div class="ls-search">搜尋地點、學校...</div>
+              <div style="font-size:8px;color:rgba(255,255,255,.8)">EN ▾</div>
+            </div>
+            <!-- Laptop body -->
+            <div class="ls-body">
+              <div class="ls-sidebar">
+                <div class="ls-filter">
+                  <div class="ls-filter-title">篩選條件</div>
+                  <div class="ls-filter-line active"></div>
+                  <div class="ls-filter-line" style="width:80%"></div>
+                  <div class="ls-filter-line active" style="width:50%"></div>
+                  <div class="ls-filter-line" style="width:90%"></div>
+                </div>
+                <div class="ls-filter">
+                  <div class="ls-filter-title">租金範圍</div>
+                  <div style="height:6px;background:linear-gradient(90deg,#F0A828 65%,#e0e0e0 65%);border-radius:3px;margin-top:6px"></div>
+                </div>
+              </div>
+              <div class="ls-cards">
+                <div class="ls-card">
+                  <div class="ls-card-img"></div>
+                  <div class="ls-card-lines">
+                    <div class="ls-card-line" style="width:90%"></div>
+                    <div class="ls-card-line" style="width:65%"></div>
+                    <div class="ls-card-price"></div>
+                  </div>
+                </div>
+                <div class="ls-card">
+                  <div class="ls-card-img" style="background:linear-gradient(135deg,#a0c8f0,#6090d0)"></div>
+                  <div class="ls-card-lines">
+                    <div class="ls-card-line" style="width:85%"></div>
+                    <div class="ls-card-line" style="width:55%"></div>
+                    <div class="ls-card-price"></div>
+                  </div>
+                </div>
+                <div class="ls-card">
+                  <div class="ls-card-img" style="background:linear-gradient(135deg,#c0e0a0,#80b060)"></div>
+                  <div class="ls-card-lines">
+                    <div class="ls-card-line" style="width:75%"></div>
+                    <div class="ls-card-line" style="width:80%"></div>
+                    <div class="ls-card-price"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="laptop-base"></div>
+        <div class="laptop-stand"></div>
+      </div>
+    </div>
+
+    <div class="us-hero-right">
+      <div class="us-hero-logo">
+        <svg class="us-hero-logo-icon" viewBox="0 0 44 44" fill="none">
+          <path d="M22 4L40 18V40H30V28H14V40H4V18L22 4Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="us-hero-logo-text">UniStay</span>
+      </div>
+      <p class="us-hero-desc">UniStay 是專為在外國留學生設計的租房平台，透過篩選功能與完善的房東資訊，讓留學生能快速找到安心的住所，是可靠的租房夥伴。</p>
+      <p class="us-hero-sub">UIUX DESIGN &nbsp;·&nbsp; WEB PLATFORM &nbsp;·&nbsp; 2024</p>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="us-section">
+    <h2 class="us-sec-h2">幫助在台外國留學生找到合適的租屋</h2>
+    <p class="us-sec-p">UniStay 的目標是幫助在台外國留學生克服租屋過程中的各種挑戰，讓他們能夠更安心、更有效率地找到適合的住所。平台透過（4 ）的流程，讓學生可以安全全面的瀏覽資訊、搜尋、分享、諮詢、聯繫，以及自己的住家，更多元化的選擇當自己來到台灣的住家。我們希望 UniStay 在學生選擇最適合自己喜好及需求的房子。</p>
+  </div>
+
+  <!-- HOW UNISTAY HELPS -->
+  <div class="us-section cream">
+    <h2 class="us-sec-h2">Unistay如何成為外國留學生的助手？</h2>
+    <div class="us-screens">
+      <div class="us-screen-item">
+        <div class="us-screen-mock">
+          <div class="us-sm-bar"><div class="us-sm-dot"></div><div class="us-sm-dot"></div></div>
+          <div class="us-sm-body">
+            <div class="us-sm-row"><div class="us-sm-card tall"></div><div class="us-sm-card tall"></div></div>
+            <div class="us-sm-row"><div class="us-sm-card"></div><div class="us-sm-card"></div><div class="us-sm-card"></div></div>
+          </div>
+        </div>
+        <div class="us-sm-label-l">以「居住」為核心的租屋媒體設計</div>
+        <div class="us-sm-label-s">以居住的需求為出發，運適合的設計架構，讓學生找到合適的住所</div>
+      </div>
+      <div class="us-screen-item">
+        <div class="us-screen-mock">
+          <div class="us-sm-bar"><div class="us-sm-dot"></div><div class="us-sm-dot"></div></div>
+          <div class="us-sm-body">
+            <div style="height:12px;background:#F0A828;border-radius:3px;opacity:.6;margin-bottom:4px"></div>
+            <div class="us-sm-row"><div class="us-sm-card"></div><div class="us-sm-card"></div></div>
+            <div class="us-sm-row"><div class="us-sm-card tall"></div><div class="us-sm-card tall"></div></div>
+          </div>
+        </div>
+        <div class="us-sm-label-l">以「信任」為核心的租屋媒體設計</div>
+        <div class="us-sm-label-s">以信任的建立為核心，增強房東的透明度，讓學生能夠放心地找到合適的住所</div>
+      </div>
+      <div class="us-screen-item">
+        <div class="us-screen-mock">
+          <div class="us-sm-bar"><div class="us-sm-dot"></div><div class="us-sm-dot"></div></div>
+          <div class="us-sm-body">
+            <div style="display:grid;grid-template-columns:80px 1fr;gap:6px;flex:1">
+              <div style="background:#f0f0f0;border-radius:4px;display:flex;flex-direction:column;gap:4px;padding:6px">
+                <div style="height:5px;background:#F0A828;border-radius:2px;opacity:.8"></div>
+                <div style="height:4px;background:#ddd;border-radius:2px"></div>
+                <div style="height:4px;background:#ddd;border-radius:2px;width:70%"></div>
+                <div style="height:4px;background:#F0A828;border-radius:2px;opacity:.6;width:80%"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div class="us-sm-card"></div>
+                <div class="us-sm-card"></div>
+                <div class="us-sm-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="us-sm-label-l">以「媒合」為核心的租屋媒體設計</div>
+        <div class="us-sm-label-s">透過智慧篩選與精準媒合，讓房東與學生雙方都能找到最適合的選擇</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND -->
+  <div class="us-brand">
+    <div class="us-brand-left">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M24 4L44 20V44H32V30H16V44H4V20L24 4Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div class="us-brand-logo-text">UniStay</div>
+      </div>
+      <div class="us-brand-sub">fee / ada<br>房東 · 學生 · 媒合平台</div>
+    </div>
+    <div class="us-brand-right">
+      <div class="us-brand-h">成為房東、房屋與外國留學<br>大學生的橋樑</div>
+      <p class="us-brand-p">UniStay 提供房東上架房源、管理租約，同時讓外國留學生能夠安心瀏覽、篩選、聯繫合適住所的一站式平台。透過完善的身份驗證機制與雙向評價系統，建立房東與學生之間的信任橋樑，讓租屋過程更透明、安全。</p>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="us-research">
+    <h2 class="us-res-h">為什麼要關注在台外國留學生的租屋議題？</h2>
+    <div class="us-res-body">
+      <div class="us-chart">
+        <div class="us-chart-title">在台留學人數</div>
+        <div class="us-chart-sub">單位：人</div>
+        <div class="us-bars">
+          <div class="us-bar-wrap"><div class="us-bar" style="height:45%"></div><div class="us-bar-lbl">2015</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:52%"></div><div class="us-bar-lbl">2016</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:58%"></div><div class="us-bar-lbl">2017</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:65%"></div><div class="us-bar-lbl">2018</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:72%"></div><div class="us-bar-lbl">2019</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:60%"></div><div class="us-bar-lbl">2020</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:55%"></div><div class="us-bar-lbl">2021</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:80%"></div><div class="us-bar-lbl">2022</div></div>
+          <div class="us-bar-wrap"><div class="us-bar" style="height:100%"></div><div class="us-bar-lbl">2023</div></div>
+        </div>
+        <div class="us-chart-x" style="border-top:1.5px solid #ccc;margin-top:0"></div>
+        <div style="font-size:10px;color:#aaa;margin-top:6px">年度</div>
+      </div>
+      <div class="us-res-cards">
+        <div class="us-res-card">
+          <div class="us-res-card-h">🔺 在台留學生逐年增加</div>
+          <div class="us-res-card-p">在過去，你可以從這大量的的國際留學生逐年增加，而我也自身的經歷感受到，外國留學生在台灣找房子的困難，因此提出這樣的服務來幫助外國留學生。</div>
+        </div>
+        <div class="us-res-card">
+          <div class="us-res-card-h">⚠️ 台灣租屋爭議的出現</div>
+          <div class="us-res-card-p">在台灣，我們可以發現有許多的外國留學生在租房子的時候，都有遇到了很多問題。例如，房東不誠實、房子有瑕疵、租約不公平等問題，都是外國留學生在找房子的時候，很可能會遇到的問題。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSONA -->
+  <div class="us-persona">
+    <h2 class="us-persona-h">Persona（人物誌）</h2>
+    <div class="us-persona-card">
+      <div class="us-pc-left">
+        <div class="us-pc-photo">
+          <svg viewBox="0 0 90 90" width="90" fill="none">
+            <circle cx="45" cy="35" r="20" fill="#d4a880"/>
+            <ellipse cx="45" cy="80" rx="28" ry="20" fill="#c09060"/>
+          </svg>
+        </div>
+        <div class="us-pc-name">Adrien Lefèvre</div>
+        <div class="us-pc-tag">法國留學生 · 台灣大學</div>
+        <div style="border-top:1px solid rgba(0,0,0,.1);margin:16px 0"></div>
+        <div class="us-pc-row"><div class="us-pc-dot"></div><div><div class="us-pc-lbl">年齡</div><div class="us-pc-val">22 歲</div></div></div>
+        <div class="us-pc-row"><div class="us-pc-dot"></div><div><div class="us-pc-lbl">語言</div><div class="us-pc-val">法文、英文、中文（初學）</div></div></div>
+        <div class="us-pc-row"><div class="us-pc-dot"></div><div><div class="us-pc-lbl">在台時間</div><div class="us-pc-val">即將來台，正在找房</div></div></div>
+        <div class="us-pc-row"><div class="us-pc-dot"></div><div><div class="us-pc-lbl">科系</div><div class="us-pc-val">商學院交換生</div></div></div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <div style="width:28px;height:28px;background:#1877f2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700">f</div>
+          <div style="width:28px;height:28px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700">ig</div>
+        </div>
+      </div>
+      <div class="us-pc-right">
+        <div>
+          <div class="us-pc-block-h">目標</div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet">▸</div><div class="us-pc-block-p">找到安全、負擔得起的房子</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet">▸</div><div class="us-pc-block-p">在靠近學校的地方租房</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet">▸</div><div class="us-pc-block-p">找到可以信任的房東</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet">▸</div><div class="us-pc-block-p">了解台灣租屋文化與合約規範</div></div>
+        </div>
+        <div>
+          <div class="us-pc-block-h">痛點</div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet" style="color:#e05050">▸</div><div class="us-pc-block-p">語言障礙讓溝通困難</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet" style="color:#e05050">▸</div><div class="us-pc-block-p">無法事先確認房屋實際狀況</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet" style="color:#e05050">▸</div><div class="us-pc-block-p">不熟悉台灣租屋合約與法規</div></div>
+          <div class="us-pc-block-item"><div class="us-pc-bullet" style="color:#e05050">▸</div><div class="us-pc-block-p">平台篩選功能不足</div></div>
+        </div>
+        <div>
+          <div class="us-pc-block-h">住宿習慣偏好</div>
+          <div class="us-pc-block-p">偏好獨立房間・有廚房・網路良好・靠近捷運・安全感高的社區環境</div>
+        </div>
+        <div>
+          <div class="us-pc-block-h">科技品牌品偏好</div>
+          <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+            <div style="background:#fff;border:1px solid #eee;border-radius:6px;padding:4px 10px;font-size:11px;color:#555">Airbnb</div>
+            <div style="background:#fff;border:1px solid #eee;border-radius:6px;padding:4px 10px;font-size:11px;color:#555">Google</div>
+            <div style="background:#fff;border:1px solid #eee;border-radius:6px;padding:4px 10px;font-size:11px;color:#555">Facebook</div>
+            <div style="background:#fff;border:1px solid #eee;border-radius:6px;padding:4px 10px;font-size:11px;color:#555">591</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAIN POINTS -->
+  <div class="us-pain">
+    <h2 class="us-pain-h">痛點統整訪談結果影響租屋排序</h2>
+    <p class="us-pain-sub">透過訪談外國留學生，整理出以下四大租屋痛點</p>
+    <div class="us-pain-grid">
+      <div class="us-pain-item">
+        <div class="us-pain-title">揣心網路看房和<br>實際屋況不符</div>
+        <div class="us-pain-desc">外國留學生在找房時，通常只能依靠網路上的照片和描述來判斷房屋狀況。然而，許多房東提供的資訊不夠真實或完整，讓學生在抵台後才發現房屋與網路描述有落差，無法及時更換。</div>
+      </div>
+      <div class="us-pain-item">
+        <div class="us-pain-title">房東個人資訊少，<br>難以信任</div>
+        <div class="us-pain-desc">來台留學生對台灣房東的背景、信譽難以查核，缺乏有效的身份驗證機制，讓學生在租屋前難以判斷房東是否可靠，增加了租屋的風險與不確定性。</div>
+      </div>
+      <div class="us-pain-item">
+        <div class="us-pain-title">對台灣租賃文化不了解，擔<br>心合約是否有保障</div>
+        <div class="us-pain-desc">外國留學生對台灣的租屋法規、習慣和合約條款不熟悉，擔心合約內容有不公平條款或陷阱，卻又因語言障礙難以逐條確認，容易在不知情的情況下簽下對自己不利的合約。</div>
+      </div>
+      <div class="us-pain-item">
+        <div class="us-pain-title">租屋平台篩選功能不佳，<br>找房花費時間長</div>
+        <div class="us-pain-desc">現有的台灣租屋平台（如591）介面以中文為主，篩選功能也不夠精細，外國留學生很難快速找到符合自己需求的房源，需要花費大量時間逐一瀏覽，效率低落。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="us-solution">
+    <h2 class="us-sol-h">解方發想</h2>
+    <div class="us-sol-big">
+      我們發想了一個服務與線上平台，幫助在台外國留學生可以在家鄉<br>也可以，可信任的方式找到在台灣的家
+    </div>
+    <p class="us-sol-p">針對以上痛點，UniStay 提供完善的解決方案，透過建立可信賴的租屋媒合機制，讓外國留學生能夠更安心地在台灣找到適合的住所。</p>
+  </div>
+
+  <!-- SOLUTION IDEAS -->
+  <div class="us-ideas">
+    <h2 class="us-ideas-h">解方想法</h2>
+    <div class="us-ideas-grid">
+      <div class="us-idea-card">
+        <div class="us-idea-num">01</div>
+        <div class="us-idea-card-h">真實房源驗證系統</div>
+        <div class="us-idea-card-p">透過 360° 環景拍攝與時間戳記照片，確保網路上展示的房源與實際狀況相符，減少學生到台後的落差感。</div>
+      </div>
+      <div class="us-idea-card">
+        <div class="us-idea-num">02</div>
+        <div class="us-idea-card-h">房東信任評分機制</div>
+        <div class="us-idea-card-p">建立完整的房東身份驗證流程，包含身份證明、過往租戶評價與回應率指標，讓學生在租屋前能充分了解房東。</div>
+      </div>
+      <div class="us-idea-card">
+        <div class="us-idea-num">03</div>
+        <div class="us-idea-card-h">多語言合約解說</div>
+        <div class="us-idea-card-p">提供標準化的多語言租屋合約範本，並附上重要條款的白話解說，幫助外國學生了解台灣租屋規範與自身權益。</div>
+      </div>
+      <div class="us-idea-card">
+        <div class="us-idea-num">04</div>
+        <div class="us-idea-card-h">智慧篩選與校區地圖</div>
+        <div class="us-idea-card-p">以校區為核心的地圖搜尋功能，搭配通勤時間、預算、設備需求等精細篩選條件，快速找到最適合的房源。</div>
+      </div>
+      <div class="us-idea-card">
+        <div class="us-idea-num">05</div>
+        <div class="us-idea-card-h">學生社群評價系統</div>
+        <div class="us-idea-card-p">建立前任租客的文字評價與評分系統，讓有過租屋經驗的留學生分享真實心得，幫助後來者做出更明智的選擇。</div>
+      </div>
+      <div class="us-idea-card">
+        <div class="us-idea-num">06</div>
+        <div class="us-idea-card-h">即時聊天翻譯功能</div>
+        <div class="us-idea-card-p">平台內建即時翻譯的訊息系統，讓外國學生與台灣房東能夠克服語言障礙，直接在平台上溝通所有租屋細節。</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2024 盧亭臻 &nbsp;·&nbsp; UIUX &amp; Web Design &nbsp;·&nbsp; vicky502097@gmail.com</footer>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     TASTORY PAGE
+════════════════════════════════════════ -->
+<div id="pg-tastory" class="page">
+  <div class="proj-page">
+    <div class="proj-hero ph-ts">
+      <div class="back-btn" onclick="goHome()">← 返回作品集</div>
+      <div class="proj-tag">APP DESIGN &nbsp;·&nbsp; CULTURAL EXPERIENCE</div>
+      <div class="proj-name" style="font-family:'Playfair Display',serif;color:var(--tastory-brown)">Tastory</div>
+      <p class="proj-desc" style="font-family:'Playfair Display',serif;font-style:italic;color:var(--tastory-org)">From Spoken Flavor to Shared Heritage</p>
+    </div>
+    <div class="proj-meta">
+      <div><span class="meta-label">角色</span><span class="meta-val">UX Research · UI Design</span></div>
+      <div><span class="meta-label">時間</span><span class="meta-val">2024</span></div>
+      <div><span class="meta-label">工具</span><span class="meta-val">Figma · Miro</span></div>
+      <div><span class="meta-label">類型</span><span class="meta-val">Mobile App</span></div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-sec">
+        <h2>專案概覽</h2>
+        <p>Tastory 是一款連結飲食記憶與文化傳承的應用程式，讓使用者能夠錄製、分享長輩的口述食譜，將口傳的料理智慧轉化為數位化的家族遺產。</p>
+        <div class="img-ph">[ 專案封面 / 設計稿 ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>問題定義</h2>
+        <p>許多家庭的傳統食譜只存在於長輩的記憶與口耳相傳中，隨著時間流逝，這些珍貴的料理文化正逐漸消失。年輕一代渴望留住這份記憶，卻缺乏合適的工具。</p>
+        <div class="img-ph">[ 使用者研究 · 洞察地圖 ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>設計解決方案</h2>
+        <p>Tastory 提供語音錄製食譜、AI 輔助轉錄與整理功能，讓使用者可以輕鬆保存長輩的口述烹飪智慧，並以美麗的視覺格式呈現、分享給家族成員。</p>
+        <div class="img-ph">[ 使用者流程 · Wireframes ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>設計成果</h2>
+        <p>透過溫暖的視覺設計語言和直覺的互動設計，Tastory 成功降低了長輩使用科技的門檻，同時提供年輕人一個珍藏家族記憶的平台。</p>
+        <div class="img-ph">[ 最終 UI 設計稿 ]</div>
+        <div class="img-ph">[ 互動原型展示 ]</div>
+      </div>
+    </div>
+    <footer>© 2024 盧亭臻 &nbsp;·&nbsp; UIUX &amp; Web Design &nbsp;·&nbsp; vicky502097@gmail.com</footer>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     HATCHIE DIARY PAGE
+════════════════════════════════════════ -->
+<div id="pg-hatchie" class="page">
+  <div class="proj-page">
+    <div class="proj-hero ph-hd">
+      <div class="back-btn" onclick="goHome()">← 返回作品集</div>
+      <div class="proj-tag">APP DESIGN &nbsp;·&nbsp; DAILY LIFE</div>
+      <div class="proj-name" style="
+        font-weight:900;
+        color:var(--hatchie-bg);
+        -webkit-text-stroke:2px var(--dark);
+        text-shadow:3px 3px 0 var(--hatchie-yel),-1px -1px 0 var(--dark),1px -1px 0 var(--dark),-1px 1px 0 var(--dark),1px 1px 0 var(--dark)
+      ">HATCHIE DIARY</div>
+      <p class="proj-desc">一款降低使用者負擔，分散式記錄生活的日記APP</p>
+    </div>
+    <div class="proj-meta">
+      <div><span class="meta-label">角色</span><span class="meta-val">UX Research · UI Design</span></div>
+      <div><span class="meta-label">時間</span><span class="meta-val">2024</span></div>
+      <div><span class="meta-label">工具</span><span class="meta-val">Figma · Procreate</span></div>
+      <div><span class="meta-label">類型</span><span class="meta-val">Mobile App</span></div>
+    </div>
+    <div class="proj-body">
+      <div class="proj-sec">
+        <h2>專案概覽</h2>
+        <p>Hatchie Diary 是一款以降低使用者心理負擔為核心概念的日記應用程式，採用分散式記錄方式，讓使用者能夠隨時隨地以輕鬆的方式記錄生活片段，而不感到壓力。</p>
+        <div class="img-ph">[ 專案封面 / 設計稿 ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>問題定義</h2>
+        <p>許多人雖然想記錄生活，但面對空白的日記頁面時往往感到有壓力，覺得需要寫「完整的一天」才算記錄，導致日記三分鐘熱度後就放棄。</p>
+        <div class="img-ph">[ 使用者研究 · 痛點分析 ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>設計解決方案</h2>
+        <p>Hatchie 允許使用者在一天中分散記錄不同的生活片段（就像養寵物一樣，每次互動都是一個小記錄），並在日終自動整合成完整的日記，大幅降低每次記錄的心理門檻。</p>
+        <div class="img-ph">[ 互動設計 · 使用流程 ]</div>
+      </div>
+      <div class="proj-sec">
+        <h2>設計成果</h2>
+        <p>充滿個性的怪獸角色系統搭配輕量化的記錄介面，成功傳遞「記錄不需要完美」的設計理念，讓使用者在輕鬆愉快的氛圍中養成記錄習慣。</p>
+        <div class="img-ph">[ 最終 UI 設計稿 ]</div>
+        <div class="img-ph">[ 角色系統設計 ]</div>
+      </div>
+    </div>
+    <footer>© 2024 盧亭臻 &nbsp;·&nbsp; UIUX &amp; Web Design &nbsp;·&nbsp; vicky502097@gmail.com</footer>
+  </div>
+</div>
+
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // ---- Router ----
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('pg-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.pushState({page: name}, '', '#' + name);
+  }
+
+  function goHome() {
+    showPage('home');
+  }
+
+  function toAbout() {
+    if (!document.getElementById('pg-home').classList.contains('active')) {
+      goHome();
+      setTimeout(() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' }), 120);
+    } else {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function toWork() {
+    if (!document.getElementById('pg-home').classList.contains('active')) {
+      goHome();
+      setTimeout(() => document.getElementById('work').scrollIntoView({ behavior: 'smooth' }), 120);
+    } else {
+      document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // Handle initial hash
+  (function() {
+    const hash = location.hash.replace('#','');
+    const valid = ['home','unistay','tastory','hatchie'];
+    if (hash && valid.includes(hash)) showPage(hash);
+  })();
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', e => {
+    const page = (e.state && e.state.page) ? e.state.page : 'home';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('pg-' + page).classList.add('active');
+    window.scrollTo({ top: 0 });
+  });
+
+  // ---- Scroll Reveal ----
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
